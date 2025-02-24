@@ -18,7 +18,13 @@ class PromoScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButtonWithShadow(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Спроба закрити ділог'),
+              ),
+            );
+          },
           iconPath: Assets.icons.icClose,
         ),
       ),
