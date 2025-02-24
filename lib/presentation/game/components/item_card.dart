@@ -17,7 +17,9 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       width: 174,
       height: 326,
       decoration: BoxDecoration(
@@ -57,28 +59,42 @@ class ItemCard extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image.network(game.imageUrl),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Image.network(
+                        game.imageUrl,
+                        key: ValueKey(game.imageUrl),
+                      ),
+                    ),
                     SizedBox(height: 16),
-                    Text(
-                      game.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.darkTextColor,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Mariupol',
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Text(
+                        game.name,
+                        key: ValueKey(game.name),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.darkTextColor,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Mariupol',
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () => onLikePressed(),
-              icon: SvgPicture.asset(
-                isLiked
-                    ? Assets.icons.icActiveLike
-                    : Assets.icons.icDefaultLike,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: IconButton(
+                key: ValueKey(isLiked),
+                onPressed: () => onLikePressed(),
+                icon: SvgPicture.asset(
+                  isLiked
+                      ? Assets.icons.icActiveLike
+                      : Assets.icons.icDefaultLike,
+                ),
               ),
             ),
             SizedBox(height: 8),
