@@ -1,4 +1,4 @@
-import 'package:dayme_assignment/presentation/promo_screen.dart';
+import 'package:dayme_assignment/presentation/promo/promo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
