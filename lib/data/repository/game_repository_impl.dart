@@ -58,6 +58,7 @@ class GameRepositoryImpl implements GameRepository {
       GameRequest request) async {
     try {
       await _gameApiClient.sendReport(request);
+      await _cacheService.clearGames();
       return RepositoryResponse.success();
     } catch (e) {
       return RepositoryResponse.error(error: Exception(e.toString()));

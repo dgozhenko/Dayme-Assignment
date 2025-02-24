@@ -31,6 +31,11 @@ class GameCacheService {
     }
   }
 
+  Future<void> clearGames() async {
+    await init();
+    await _box?.clear();
+  }
+
   Future<void> dispose() async {
     if (_box != null && _box!.isOpen) {
       await _box!.close();
