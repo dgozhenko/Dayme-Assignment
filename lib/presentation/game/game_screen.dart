@@ -7,7 +7,6 @@ import 'package:dayme_assignment/presentation/components/button/outlined_button_
 import 'package:dayme_assignment/presentation/components/progress_stepper.dart';
 import 'package:dayme_assignment/presentation/components/text/text_with_shadow.dart';
 import 'package:dayme_assignment/presentation/game/bloc/game_bloc.dart';
-import 'package:dayme_assignment/presentation/game/components/item_card.dart';
 import 'package:dayme_assignment/presentation/game/components/selection_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -1,11 +1,9 @@
-import 'package:collection/collection.dart';
 import 'package:dayme_assignment/data/local/game_cache_service.dart';
 import 'package:dayme_assignment/domain/model/game.dart';
 import 'package:dayme_assignment/domain/repository/game_repository.dart';
 import 'package:dayme_assignment/domain/requests/game_request.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
 
 part 'game_bloc.freezed.dart';
 part 'game_event.dart';
@@ -44,7 +42,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(state.copyWith(stage: GameStage.loading));
     try {
       final response = await _gameRepository.getGames();
-      print('response: $response');
       if (response.error != null) {
         throw response.error!;
       }
@@ -56,8 +53,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         stage: GameStage.loaded,
         games: gameModels,
       ));
-    } catch (e, stackTrace) {
-      print('Error loading games: $e\n$stackTrace');
+    } catch (e) {
       final errorMessage = e.toString();
       emit(state.copyWith(
         stage: GameStage.error,
@@ -99,7 +95,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
               game.isLiked && !state.selectedGameIds.contains(game.id))
           .map((game) => game.id)
           .toList();
-      print('likedGames: $likedGames');
 
       // Check if any games were liked in current step
       final currentPairStart = state.currentStep * 2;
@@ -133,8 +128,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       );
       await _gameRepository.sendReport(request);
       emit(state.copyWith(stage: GameStage.reportSent));
-    } catch (e, stackTrace) {
-      print('Error sending report: $e\n$stackTrace');
+    } catch (e) {
       emit(state.copyWith(
         stage: GameStage.error,
         error: e.toString(),
