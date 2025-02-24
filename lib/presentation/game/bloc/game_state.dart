@@ -11,7 +11,7 @@ class GameState with _$GameState {
   }) = _GameState;
 }
 
-enum GameStage { initial, loading, error, loaded }
+enum GameStage { initial, loading, error, loaded, reportSent }
 
 extension GameStageX on GameStage {
   bool get isLoading => this == GameStage.loading;

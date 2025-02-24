@@ -1,4 +1,5 @@
 import 'package:dayme_assignment/core/di/locator.dart';
+import 'package:dayme_assignment/presentation/game_results/game_results_screen.dart';
 import 'package:dayme_assignment/presentation/game/bloc/game_bloc.dart';
 import 'package:dayme_assignment/presentation/game/game_screen.dart';
 import 'package:dayme_assignment/presentation/promo/promo_screen.dart';
@@ -44,6 +45,12 @@ class AppRouter {
               child: const GameScreen(),
             );
           },
+        ),
+        GoRoute(
+          name: AppRoutes.gameResult.name,
+          path: AppRoutes.gameResult.path,
+          parentNavigatorKey: rootNavigationKey,
+          builder: (context, state) => const GameResultsScreen(),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:dayme_assignment/data/local/game_cache_service.dart';
 import 'package:dayme_assignment/domain/model/game.dart';
 import 'package:dayme_assignment/domain/repository/game_repository.dart';
+import 'package:dayme_assignment/domain/requests/game_request.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
@@ -31,8 +32,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           GameEventLikeItem(gameId: int gameId) => _onLikeItem(emit, gameId),
           GameEventNextStep() => _onNextStep(emit),
           GameEventReportResponse() => _onReportResponse(emit),
+          GameEventErrorObserved() => _onErrorObserved(emit),
         };
       };
+
+  void _onErrorObserved(Emitter<GameState> emit) {
+    emit(state.copyWith(stage: GameStage.loaded));
+  }
 
   void _onInitEvent(Emitter<GameState> emit) async {
     emit(state.copyWith(stage: GameStage.loading));
@@ -87,13 +93,29 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onNextStep(Emitter<GameState> emit) {
-    if (state.currentStep + 1 <= 10) {
+    if (state.currentStep + 1 < 10) {
       final likedGames = state.games
           .where((game) =>
               game.isLiked && !state.selectedGameIds.contains(game.id))
           .map((game) => game.id)
           .toList();
       print('likedGames: $likedGames');
+
+      // Check if any games were liked in current step
+      final currentPairStart = state.currentStep * 2;
+      final currentPairEnd = currentPairStart + 2;
+      final anyLikedInCurrentStep = state.games
+          .sublist(currentPairStart, currentPairEnd)
+          .any((game) => game.isLiked);
+
+      if (!anyLikedInCurrentStep) {
+        emit(state.copyWith(
+          stage: GameStage.error,
+          error: 'Будь ласка, оберіть один з варіантів',
+        ));
+        return;
+      }
+
       emit(state.copyWith(
         currentStep: state.currentStep + 1,
         selectedGameIds: [...state.selectedGameIds, ...likedGames],
@@ -103,8 +125,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
-  void _onReportResponse(Emitter<GameState> emit) {
-    emit(state.copyWith(stage: GameStage.loading));
+  void _onReportResponse(Emitter<GameState> emit) async {
+    try {
+      final request = GameRequest(
+        bonus: 10,
+        likeIds: state.selectedGameIds,
+      );
+      await _gameRepository.sendReport(request);
+      emit(state.copyWith(stage: GameStage.reportSent));
+    } catch (e, stackTrace) {
+      print('Error sending report: $e\n$stackTrace');
+      emit(state.copyWith(
+        stage: GameStage.error,
+        error: e.toString(),
+      ));
+    }
   }
 
   @override

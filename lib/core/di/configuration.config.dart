@@ -35,18 +35,11 @@ _i174.GetIt $configureDependencies(
   final networkModule = _$NetworkModule();
   final repositoryModule = _$RepositoryModule();
   final blocModule = _$BlocModule();
+  gh.singleton<_i361.Dio>(() => networkModule.provideDio());
   gh.singleton<_i630.AppRouter>(() => _i630.AppRouter());
   gh.lazySingleton<_i894.GameCacheService>(() => _i894.GameCacheService());
-  gh.factory<String>(
-    () => networkModule.baseUrl,
-    instanceName: 'base_url',
-  );
-  gh.singleton<_i361.Dio>(
-      () => networkModule.dio(gh<String>(instanceName: 'base_url')));
-  gh.singleton<_i730.GameApiClient>(() => networkModule.gameClient(
-        gh<_i361.Dio>(),
-        gh<String>(instanceName: 'base_url'),
-      ));
+  gh.singleton<_i730.GameApiClient>(
+      () => networkModule.provideGameApiClient(gh<_i361.Dio>()));
   gh.lazySingleton<_i622.GameRepository>(() => repositoryModule.gameRepository(
         gh<_i730.GameApiClient>(),
         gh<_i894.GameCacheService>(),

@@ -1,6 +1,5 @@
-import 'package:dayme_assignment/domain/responses/game_response.dart';
+import 'package:dayme_assignment/domain/requests/game_request.dart';
 import 'package:dio/dio.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'game_api_client.g.dart';
@@ -11,4 +10,7 @@ abstract class GameApiClient {
 
   @GET('/game')
   Future<dynamic> getGames();
+
+  @POST('/game/')
+  Future<dynamic> sendReport(@Body() GameRequest request);
 }

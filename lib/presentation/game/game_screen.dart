@@ -1,4 +1,5 @@
 import 'package:dayme_assignment/core/bloc_utils/bloced_state.dart';
+import 'package:dayme_assignment/core/navigation/app_routes.dart';
 import 'package:dayme_assignment/core/theme/colors.dart';
 import 'package:dayme_assignment/gen/assets.gen.dart';
 import 'package:dayme_assignment/presentation/components/button/icon_button_with_shadow.dart';
@@ -37,6 +38,10 @@ class _GameScreenState extends BlocedState<GameScreen, GameBloc, GameState> {
                   Text(state.error ?? 'Сталася помилка. Спробуйте ще раз.'),
             ),
           );
+          bloc.add(GameEvent.errorObserved());
+        }
+        if (state.stage == GameStage.reportSent) {
+          context.pushReplacement(AppRoutes.gameResult.path);
         }
       },
       builder: (context, state) {
