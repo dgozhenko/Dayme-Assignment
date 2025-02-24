@@ -56,7 +56,7 @@ class PromoScreen extends StatelessWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    // SVG didn't contain food images, so I used PNG. In order to fix blurry image I need image with high resolution.
+                    // SVG didn't contain food images<probably contain but Flutter cannot recognize>, so I used PNG. In order to fix blurry image I need image with high resolution.
                     Image.asset(
                       Assets.images.promoItemsPng.path,
                       width: 260,

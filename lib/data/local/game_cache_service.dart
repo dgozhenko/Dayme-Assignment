@@ -8,7 +8,6 @@ class GameCacheService {
   Box<GameResponse>? _box;
 
   Future<void> init() async {
-    print('init box ${_box}');
     if (!Hive.isAdapterRegistered(0)) {
       // 0 is the typeId from GameResponse
       Hive.registerAdapter(GameResponseAdapter());
@@ -21,7 +20,6 @@ class GameCacheService {
 
   Future<List<GameResponse>> getGames() async {
     await init();
-    print('getGames: ${_box?.values.toList()}');
     return _box?.values.toList() ?? [];
   }
 

@@ -5,11 +5,11 @@ import 'package:dayme_assignment/gen/assets.gen.dart';
 import 'package:dayme_assignment/presentation/components/button/icon_button_with_shadow.dart';
 import 'package:dayme_assignment/presentation/components/button/outlined_button_with_shadow.dart';
 import 'package:dayme_assignment/presentation/components/progress_stepper.dart';
+import 'package:dayme_assignment/presentation/components/row/bonus_score_row.dart';
 import 'package:dayme_assignment/presentation/components/text/text_with_shadow.dart';
 import 'package:dayme_assignment/presentation/game/bloc/game_bloc.dart';
 import 'package:dayme_assignment/presentation/game/components/selection_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class GameScreen extends StatefulWidget {
@@ -57,30 +57,9 @@ class _GameScreenState extends BlocedState<GameScreen, GameBloc, GameState> {
                   iconPath: Assets.icons.icClose,
                 ),
                 actions: [
-                  Text(
-                    '10 / ',
-                    style: TextStyle(
-                      color: AppColors.primaryTextColor,
-                      fontFamily: 'Mariupol',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    '${state.selectedGameIds.length}',
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontFamily: 'Mariupol',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  SvgPicture.asset(Assets.icons.icActiveCoin),
-                  SizedBox(
-                    width: 16,
+                  BonusScoreRow(
+                    bonus: state.selectedGameIds.length,
+                    isCompleted: state.selectedGameIds.length == 10,
                   ),
                 ],
               ),
