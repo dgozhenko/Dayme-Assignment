@@ -44,6 +44,9 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/promo.svg
+  String get promo => 'assets/images/promo.svg';
+
   /// File path: assets/images/promo_items.png
   AssetGenImage get promoItemsPng =>
       const AssetGenImage('assets/images/promo_items.png');
@@ -58,9 +61,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/promo_title.svg
   String get promoTitleSvg => 'assets/images/promo_title.svg';
 
+  /// File path: assets/images/win.svg
+  String get win => 'assets/images/win.svg';
+
   /// List of all assets
   List<dynamic> get values =>
-      [promoItemsPng, promoItemsSvg, promoTitlePng, promoTitleSvg];
+      [promo, promoItemsPng, promoItemsSvg, promoTitlePng, promoTitleSvg, win];
 }
 
 class Assets {

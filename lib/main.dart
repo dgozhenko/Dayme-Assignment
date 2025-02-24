@@ -1,20 +1,17 @@
+import 'package:dayme_assignment/core/setup/launch.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+void main() async {
+  final router = await launch();
+  runApp(
+    MaterialApp.router(
+      title: 'DaymeAssignment',
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
+      routerDelegate: router.routerDelegate,
+      backButtonDispatcher: router.backButtonDispatcher,
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
+    ),
+  );
 }

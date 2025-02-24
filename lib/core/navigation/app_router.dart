@@ -1,3 +1,4 @@
+import 'package:dayme_assignment/presentation/promo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
@@ -18,15 +19,15 @@ class AppRouter {
 
     final router = GoRouter(
       navigatorKey: rootNavigationKey,
-      initialLocation: AppRoutes.main.path,
+      initialLocation: AppRoutes.promo.path,
       debugLogDiagnostics: true,
       routes: [
         GoRoute(
-          name: AppRoutes.main.name,
-          path: AppRoutes.main.path,
+          name: AppRoutes.promo.name,
+          path: AppRoutes.promo.path,
           parentNavigatorKey: rootNavigationKey,
           builder: (context, state) {
-            return const Text('Hello');
+            return const PromoScreen();
           },
         ),
       ],

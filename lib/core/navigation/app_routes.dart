@@ -1,5 +1,5 @@
 enum AppRoutes {
-  main('/main'),
+  promo('/promo'),
   game('/game'),
   gameResult('/game_result'),
   ;
