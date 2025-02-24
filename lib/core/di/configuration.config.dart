@@ -12,6 +12,7 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../data/local/game_cache_service.dart' as _i894;
 import '../../domain/api/game_api_client.dart' as _i730;
 import '../../domain/repository/game_repository.dart' as _i622;
 import '../navigation/app_router.dart' as _i630;
@@ -32,6 +33,7 @@ _i174.GetIt $configureDependencies(
   final networkModule = _$NetworkModule();
   final repositoryModule = _$RepositoryModule();
   gh.singleton<_i630.AppRouter>(() => _i630.AppRouter());
+  gh.lazySingleton<_i894.GameCacheService>(() => _i894.GameCacheService());
   gh.factory<String>(
     () => networkModule.baseUrl,
     instanceName: 'base_url',
@@ -42,8 +44,10 @@ _i174.GetIt $configureDependencies(
         gh<_i361.Dio>(),
         gh<String>(instanceName: 'base_url'),
       ));
-  gh.lazySingleton<_i622.GameRepository>(
-      () => repositoryModule.gameRepository(gh<_i730.GameApiClient>()));
+  gh.lazySingleton<_i622.GameRepository>(() => repositoryModule.gameRepository(
+        gh<_i730.GameApiClient>(),
+        gh<_i894.GameCacheService>(),
+      ));
   return getIt;
 }
 
