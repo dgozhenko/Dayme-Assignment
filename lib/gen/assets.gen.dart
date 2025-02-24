@@ -18,6 +18,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_active_like.svg
   String get icActiveLike => 'assets/icons/ic_active_like.svg';
 
+  /// File path: assets/icons/ic_active_progress_bar.svg
+  String get icActiveProgressBar => 'assets/icons/ic_active_progress_bar.svg';
+
   /// File path: assets/icons/ic_close.svg
   String get icClose => 'assets/icons/ic_close.svg';
 
@@ -27,6 +30,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_default_like.svg
   String get icDefaultLike => 'assets/icons/ic_default_like.svg';
 
+  /// File path: assets/icons/ic_inactive_progress_bar.svg
+  String get icInactiveProgressBar =>
+      'assets/icons/ic_inactive_progress_bar.svg';
+
   /// File path: assets/icons/ic_win.svg
   String get icWin => 'assets/icons/ic_win.svg';
 
@@ -34,9 +41,11 @@ class $AssetsIconsGen {
   List<String> get values => [
         icActiveCoin,
         icActiveLike,
+        icActiveProgressBar,
         icClose,
         icDefaultCoin,
         icDefaultLike,
+        icInactiveProgressBar,
         icWin
       ];
 }
@@ -61,12 +70,23 @@ class $AssetsImagesGen {
   /// File path: assets/images/promo_title.svg
   String get promoTitleSvg => 'assets/images/promo_title.svg';
 
+  /// File path: assets/images/test_image.png
+  AssetGenImage get testImage =>
+      const AssetGenImage('assets/images/test_image.png');
+
   /// File path: assets/images/win.svg
   String get win => 'assets/images/win.svg';
 
   /// List of all assets
-  List<dynamic> get values =>
-      [promo, promoItemsPng, promoItemsSvg, promoTitlePng, promoTitleSvg, win];
+  List<dynamic> get values => [
+        promo,
+        promoItemsPng,
+        promoItemsSvg,
+        promoTitlePng,
+        promoTitleSvg,
+        testImage,
+        win
+      ];
 }
 
 class Assets {

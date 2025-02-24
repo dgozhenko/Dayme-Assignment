@@ -4,27 +4,39 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class GameCacheService {
-  static const String _boxName = 'games';
-  static const String _gamesKey = 'all_games';
+  static const String boxName = 'games';
+  Box<GameResponse>? _box;
 
   Future<void> init() async {
-    Hive.registerAdapter(GameResponseAdapter());
-    await Hive.openBox<List<GameResponse>>(_boxName);
+    print('init box ${_box}');
+    if (!Hive.isAdapterRegistered(0)) {
+      // 0 is the typeId from GameResponse
+      Hive.registerAdapter(GameResponseAdapter());
+    }
+
+    if (_box == null || !_box!.isOpen) {
+      _box = await Hive.openBox<GameResponse>(boxName);
+    }
   }
 
-  Future<List<GameResponse>?> getCachedGames() async {
-    final box = Hive.box<List>(_boxName);
-    final games = box.get(_gamesKey);
-    return games?.cast<GameResponse>();
+  Future<List<GameResponse>> getGames() async {
+    await init();
+    print('getGames: ${_box?.values.toList()}');
+    return _box?.values.toList() ?? [];
   }
 
-  Future<void> cacheGames(List<GameResponse> games) async {
-    final box = Hive.box<List>(_boxName);
-    await box.put(_gamesKey, games);
+  Future<void> saveGames(List<GameResponse> games) async {
+    await init();
+    await _box?.clear();
+    for (final game in games) {
+      await _box?.add(game);
+    }
   }
 
-  Future<void> clearCache() async {
-    final box = Hive.box<List>(_boxName);
-    await box.clear();
+  Future<void> dispose() async {
+    if (_box != null && _box!.isOpen) {
+      await _box!.close();
+      _box = null;
+    }
   }
 }

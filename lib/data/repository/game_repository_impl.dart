@@ -14,25 +14,46 @@ class GameRepositoryImpl implements GameRepository {
   Future<RepositoryResponse<List<GameResponse>, Exception>> getGames() async {
     try {
       // Try to get games from cache first
-      final cachedGames = await _cacheService.getCachedGames();
-      if (cachedGames != null && cachedGames.isNotEmpty) {
+      final cachedGames = await _cacheService.getGames();
+      print('cachedGames: $cachedGames');
+      if (cachedGames.isNotEmpty) {
+        print('cachedGames: $cachedGames');
         return RepositoryResponse.success(data: cachedGames);
       }
 
       // If cache is empty or expired, fetch from API
       final response = await _gameApiClient.getGames();
+      print('response from repository: $response');
+
+      if (response == null) {
+        throw Exception('Немає продуктів');
+      }
+
+      final List<GameResponse> games = (response as List<dynamic>)
+          .expand((group) => (group as List<dynamic>))
+          .map((item) => GameResponse.fromJson(item as Map<String, dynamic>))
+          .toList();
 
       // Cache the new data
-      await _cacheService.cacheGames(response);
+      await _cacheService.saveGames(games);
 
-      return RepositoryResponse.success(data: response);
+      return RepositoryResponse.success(data: games);
     } catch (e) {
       // If there's an error, try to return cached data as fallback
-      final cachedGames = await _cacheService.getCachedGames();
-      if (cachedGames != null && cachedGames.isNotEmpty) {
-        return RepositoryResponse.success(data: cachedGames);
+      print('error: $e');
+      try {
+        final cachedGames = await _cacheService.getGames();
+        if (cachedGames.isNotEmpty) {
+          print('cachedGames: $cachedGames');
+          return RepositoryResponse.success(data: cachedGames);
+        }
+      } catch (_) {
+        // Ignore cache errors in error handling
       }
-      return RepositoryResponse.error(error: e as Exception);
+
+      return RepositoryResponse.error(
+        error: Exception('Помилка'),
+      );
     }
   }
 }
